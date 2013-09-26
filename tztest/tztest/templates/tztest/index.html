@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Django, Postgres and Time Zones</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  {% if no_header %}
+  <br/>
+  {% else %}
+  <div class="jumbotron">
+    <div class="container">
+      <h2>Django, Postgres and Time Zones</h2>
+      <p>
+      This is a demonstration of some time zone issues using Django
+      and Postgres with naive datetime objects and a time zone
+      with daylight savings time. The table contains two timestamps
+      that were saved to Postgres using the Django ORM and then
+      loaded back using different techniques for both the save
+      and load steps. The green cells show where we stored or loaded
+      the same timestamp we saved. The red cells are where the stored
+      or loaded timestamp was different and by how much.
+      </p>
+    </div>
+  </div>
+  {% endif %}
+  <div class="container">
+    <div class="panel panel-default">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          {% for title in table.headers %}
+            {% if forloop.counter0 < 3 %}
+            <th rowspan="2">{{ title }}</th>
+            {% else %}
+            <th colspan="2" class="text-center">{{ title|escape }}</th>
+            {% endif %}
+          {% endfor %}
+        </tr>
+          <th class="text-center">Stored</th>
+          <th class="text-center">Loaded</th>
+          <th class="text-center">Stored</th>
+          <th class="text-center">Loaded</th>
+        <tr>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table.rows %}
+        <tr>
+          {% for col in row %}
+            {% if forloop.counter0 < 3 %}
+            <td>{{ col }}</td>
+            {% else %}
+            {% if col.stored_correctly %}
+            <td class="text-center success">OK</td>
+            {% else %}
+            <td class="text-center danger">off by {{ col.stored_error }}</td>
+            {% endif %}
+            {% if col.loaded_correctly %}
+            <td class="text-center success">OK</td>
+            {% else %}
+            <td class="text-center danger">off by {{ col.loaded_error }}</td>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</body>
+</html>

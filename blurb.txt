@@ -1,0 +1,13 @@
+Django, Postgres, Timezones, and You
+
+Dealing with multiple time zones can be tricky and it is easy to run into problems if you are not careful. This talk explores some of the potiential pitfalls when working with timestamps in Django and Postgres and how to deal with them.
+
+Consider the following code:
+
+   dt = datetime.datetime.now()
+   myobj = MyDjangoModel.objects.create(timestamp=dt)
+   myobj = MyDjangoModel.objects.get(pk=myobj.pk)
+
+Would you expect that 'myobj.timestamp == dt'? With the default Django settings that is not guaranteed to be the case; come to this talk and find out why.
+
+Dave Peticolas is a software engineer at Counsyl. Prior to that he was a software engineer at Lucasfilm for ten years. He has contributed to numerous open source projects including GnuCash and Twisted, and is the author of a popular introduction to Twisted and asynchronous programming at http://krondo.com.
